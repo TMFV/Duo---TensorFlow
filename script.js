@@ -1,5 +1,3 @@
-console.log("Hello TensorFlow");
-
 /**
  * Get the car data reduced to just the variables we are interested
  * and cleaned of missing data.
@@ -18,28 +16,6 @@ async function getData() {
 
   return cleaned;
 }
-async function run() {
-  // Load and plot the original input data that we are going to train on.
-  const data = await getData();
-  const values = data.map((d) => ({
-    x: d.horsepower,
-    y: d.mpg,
-  }));
-
-  tfvis.render.scatterplot(
-    { name: "Horsepower v MPG" },
-    { values },
-    {
-      xLabel: "Horsepower",
-      yLabel: "MPG",
-      height: 300,
-    }
-  );
-}
-// More code will be added below
-
-document.addEventListener("DOMContentLoaded", run);
-
 function createModel() {
   // Create a sequential model
   const model = tf.sequential();
@@ -52,11 +28,6 @@ function createModel() {
 
   return model;
 }
-
-// Create the model
-const model = createModel();
-tfvis.show.modelSummary({ name: "Model Summary" }, model);
-
 /**
  * Convert the input data to tensors that we can use for machine
  * learning. We will also do the important best practices of _shuffling_
@@ -102,7 +73,6 @@ function convertToTensor(data) {
     };
   });
 }
-
 async function trainModel(model, inputs, labels) {
   // Prepare the model for training.
   model.compile({
@@ -125,16 +95,6 @@ async function trainModel(model, inputs, labels) {
     ),
   });
 }
-async function run() {
-  // Convert the data to a form we can use for training.
-  const tensorData = convertToTensor(data);
-  const { inputs, labels } = tensorData;
-
-  // Train the model
-  await trainModel(model, inputs, labels);
-  console.log("Done Training");
-}
-
 function testModel(model, inputData, normalizationData) {
   const { inputMax, inputMin, labelMin, labelMax } = normalizationData;
 
@@ -175,8 +135,39 @@ function testModel(model, inputData, normalizationData) {
     }
   );
 }
-// Make some predictions using the model and compare them to the
-// original data
 
-testModel(model, data, tensorData);
-run();
+async function run() {
+  // Load and plot the original input data that we are going to train on.
+  const data = await getData();
+  const values = data.map((d) => ({
+    x: d.horsepower,
+    y: d.mpg,
+  }));
+
+  tfvis.render.scatterplot(
+    { name: "Horsepower v MPG" },
+    { values },
+    {
+      xLabel: "Horsepower",
+      yLabel: "MPG",
+      height: 300,
+    }
+  );
+
+  // More code will be added below
+  // Create the model
+  const model = createModel();
+  tfvis.show.modelSummary({ name: "Model Summary" }, model);
+  // Convert the data to a form we can use for training.
+  const tensorData = convertToTensor(data);
+  const { inputs, labels } = tensorData;
+
+  // Train the model
+  await trainModel(model, inputs, labels);
+  console.log("Done Training");
+  // Make some predictions using the model and compare them to the
+  // original data
+  testModel(model, data, tensorData);
+}
+
+document.addEventListener("DOMContentLoaded", run);
