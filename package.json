@@ -1,0 +1,23 @@
+{
+  "name": "duo---tensorflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TMFV/Duo---TensorFlow.git"
+  },
+  "author": "tmfv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TMFV/Duo---TensorFlow/issues"
+  },
+  "homepage": "https://github.com/TMFV/Duo---TensorFlow#readme",
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.6.0",
+    "@tensorflow/tfjs-vis": "^1.5.1"
+  }
+}
